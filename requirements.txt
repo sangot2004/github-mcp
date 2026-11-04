@@ -1,0 +1,8 @@
+mcp[cli]
+anyio
+langchain[mcp]
+langchain-google-genai
+python-dotenv
+langsmith
+langgraph
+streamlit
