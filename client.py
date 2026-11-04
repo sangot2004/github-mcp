@@ -7,7 +7,6 @@ async def main():
 
     async with Client("http://localhost:8000/mcp") as client:
 
-        # 1. Khám phá các tool từ MCP Server
         response = await client.list_tools()
 
         print("\nVAILABLE MCP TOOLS")
@@ -16,7 +15,6 @@ async def main():
             print(f"{index}. {tool.name}")
             print(f"   {tool.description}")
 
-        # 2. Chọn tool
         tool_names = [tool.name for tool in response.tools]
 
         print("\nNhập tên tool muốn sử dụng:")
@@ -26,7 +24,6 @@ async def main():
             print("Tool không tồn tại!")
             return
 
-        # 3. Nhập tham số theo từng tool
         args = {}
 
         if tool_name == "list_public_repositories":
@@ -54,12 +51,10 @@ async def main():
             args["path"] = input("File path (ví dụ README.md): ")
             args["ref"] = input("Branch/ref (Enter = default): ")
 
-        # 4. Gọi tool qua MCP
         print("\nCalling MCP tool...")
 
         result = await client.call_tool(tool_name, args)
 
-        # 5. Hiển thị kết quả
         print("\nTOOL RESULT")
 
         if result.is_error:

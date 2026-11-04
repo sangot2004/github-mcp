@@ -35,17 +35,14 @@ def text_only(content):
 
 async def main():
 
-    # 1. Khởi tạo Gemini
     model = ChatGoogleGenerativeAI(
         model="gemini-3.8-flash",
         temperature=0,
         google_api_key=os.getenv("GOOGLE_API_KEY")
     )
 
-    # 2. Kết nối đến GitHub MCP Server
     mcp_adapter = MCPAdapter("http://127.0.0.1:8000/mcp")
 
-    # 3. Lấy danh sách tool từ MCP Server
     tools = await mcp_adapter.list_tools()
 
     print("Connected to GitHub MCP Server!")
@@ -54,7 +51,6 @@ async def main():
     for tool in tools:
         print(f"- {tool.name}: {tool.description}")
 
-    # 4. Tạo AI Agent
     agent = create_agent(
         model=model,
         tools=tools,
@@ -78,7 +74,6 @@ async def main():
     print("\nGitHub AI Assistant is ready!")
     print("Type 'exit' to quit.\n")
 
-    # 5. Chat loop
     while True:
 
         question = input("You: ").strip()
@@ -101,7 +96,6 @@ async def main():
                 }
             )
 
-            # Lấy câu trả lời cuối cùng của Agent
             final_message = response["messages"][-1]
 
             print("\nAI:", text_only(final_message.content))

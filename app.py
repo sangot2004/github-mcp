@@ -25,10 +25,6 @@ class AsyncLoopThread:
         return future.result()
 
 
-# --------------------------------
-# 1. Page configuration
-# --------------------------------
-
 st.set_page_config(
     page_title="GitHub MCP Assistant",
     page_icon="🐙",
@@ -41,10 +37,6 @@ st.caption(
     "pull requests, commits and source files."
 )
 
-
-# --------------------------------
-# 2. Initialize Graph
-# --------------------------------
 
 @st.cache_resource
 def get_async_runtime():
@@ -63,20 +55,12 @@ except Exception as e:
     st.stop()
 
 
-# --------------------------------
-# 3. Initialize chat session
-# --------------------------------
-
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if "thread_id" not in st.session_state:
     st.session_state.thread_id = str(uuid.uuid4())
 
-
-# --------------------------------
-# 4. Sidebar
-# --------------------------------
 
 with st.sidebar:
     st.header("GitHub MCP Assistant")
@@ -101,22 +85,13 @@ with st.sidebar:
     st.caption("Powered by Gemini + LangGraph + MCP")
 
 
-# --------------------------------
-# 5. Display chat history
-# --------------------------------
-
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
 
-# --------------------------------
-# 6. Chat input
-# --------------------------------
-
 if prompt := st.chat_input("Ask something about GitHub..."):
 
-    # Display user message
     st.session_state.messages.append({
         "role": "user",
         "content": prompt
@@ -125,7 +100,6 @@ if prompt := st.chat_input("Ask something about GitHub..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Call LangGraph
     with st.chat_message("assistant"):
 
         with st.spinner("Gemini is analyzing your request..."):
@@ -152,7 +126,6 @@ if prompt := st.chat_input("Ask something about GitHub..."):
                 final_message = result["messages"][-1]
                 content = final_message.content
 
-                # Handle both string and block-based content
                 if isinstance(content, list):
                     content = "\n".join(
                         block.get("text", "")

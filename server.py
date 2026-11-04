@@ -12,7 +12,6 @@ mcp = MCPServer("GitHub MCP Server")
 GITHUB_API = "https://api.github.com"
 
 
-# Hàm dùng chung để gọi GitHub REST API
 def github_get(endpoint: str, params: dict | None = None):
     url = GITHUB_API + endpoint
 
@@ -40,7 +39,6 @@ def github_get(endpoint: str, params: dict | None = None):
         raise ValueError(f"Cannot connect to GitHub: {e.reason}")
 
 
-# TOOL 1: Liệt kê repository công khai
 @mcp.tool()
 def list_public_repositories(
     username: str,
@@ -74,7 +72,6 @@ def list_public_repositories(
         return str(e)
 
 
-# TOOL 2: Lấy thông tin chi tiết repository
 @mcp.tool()
 def get_repository(owner: str, repo: str) -> str:
     """Lấy thông tin chi tiết của một repository."""
@@ -102,7 +99,6 @@ def get_repository(owner: str, repo: str) -> str:
         return str(e)
 
 
-# TOOL 3: Liệt kê Issues
 @mcp.tool()
 def list_issues(
     owner: str,
@@ -124,8 +120,6 @@ def list_issues(
             {"state": state, "per_page": limit}
         )
 
-        # GitHub Issues API cũng trả về Pull Requests.
-        # Loại bỏ các phần tử có trường pull_request.
         result = [
             {
                 "number": issue["number"],
@@ -145,7 +139,6 @@ def list_issues(
         return str(e)
 
 
-# TOOL 4: Liệt kê Pull Requests
 @mcp.tool()
 def list_pull_requests(
     owner: str,
@@ -187,7 +180,6 @@ def list_pull_requests(
         return str(e)
 
 
-# TOOL 5: Xem lịch sử commit
 @mcp.tool()
 def list_commits(
     owner: str,
@@ -222,7 +214,6 @@ def list_commits(
         return str(e)
 
 
-# TOOL 6: Đọc nội dung file trong repository
 @mcp.tool()
 def get_file_contents(
     owner: str,
